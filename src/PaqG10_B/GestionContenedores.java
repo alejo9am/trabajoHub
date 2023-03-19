@@ -65,6 +65,9 @@ public class GestionContenedores extends JFrame{
 
                 Valencia.apilar(apilado, Valencia);
                 estadoHub.setText(Valencia.toString(Valencia));
+
+                id_field.setText("");
+                peso_field.setText("");
             }
         });
     }
