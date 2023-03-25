@@ -1,24 +1,24 @@
 package PaqG10_B;
 
-public class Hub {
+public class Puerto {
     final int F = 10;
     final int C = 12;
-    public Contenedor[][] matriz = new Contenedor[F][C];
+    public Contenedor[][] almacen = new Contenedor[F][C];
 
-    public Hub(){
+    public Puerto(){
         for(int i=0;i<F;i++){
             for(int j=0;j<C;j++){
                 Contenedor c = new Contenedor();
-                matriz[i][j]=c;
+                almacen[i][j]=c;
             }
         }
     }
 
-    public String toString(Hub almacen){
+    public String toString(Puerto hub){
         StringBuilder s = new StringBuilder();
         for(int i=0;i<F;i++){
             for(int j=0;j<C;j++){
-                if (almacen.matriz[i][j].id == -1){
+                if (hub.almacen[i][j].getId() == -1){
                     s.append("0       ");
                 }
                 else s.append("1       ");
@@ -28,20 +28,20 @@ public class Hub {
         return s.toString();
     }
 
-    public boolean apilar(Contenedor c, Hub almacen){
-        if(c.prioridad == 1){
+    public boolean apilar(Contenedor c, Puerto hub){
+        if(c.getPrioridad() == 1){
             for(int i=(F-1);i>=0;i--){
-                if(almacen.matriz[i][0].id == -1){
-                    almacen.matriz[i][0]=c;
+                if(hub.almacen[i][0].getId() == -1){
+                    hub.almacen[i][0]=c;
                     return true;
                 }
             }
             return false;
         }
-        else if(c.prioridad == 2){
+        else if(c.getPrioridad() == 2){
             for(int i=(F-1);i>=0;i--){
-                if(almacen.matriz[i][1].id == -1){
-                    almacen.matriz[i][1]=c;
+                if(hub.almacen[i][1].getId() == -1){
+                    hub.almacen[i][1]=c;
                     return true;
                 }
             }
@@ -50,8 +50,8 @@ public class Hub {
         else{
             for(int col=2;col<(C-1);col++){
                 for(int fil=(F-1);fil>=0;fil--){
-                    if(almacen.matriz[fil][col].id == -1){
-                        almacen.matriz[fil][col]=c;
+                    if(hub.almacen[fil][col].getId() == -1){
+                        hub.almacen[fil][col]=c;
                         return true;
                     }
                 }

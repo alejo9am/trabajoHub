@@ -15,7 +15,7 @@ public class InfoContenedor extends JFrame{
     private JRadioButton prioridad3;
     private JCheckBox aduanasCheck;
 
-    public InfoContenedor(int id, Hub valencia){
+    public InfoContenedor(int id, Puerto hub){
         setContentPane(panelInfo);
         setTitle("Informacion del contenedor");
         setSize(640,420);
@@ -25,20 +25,21 @@ public class InfoContenedor extends JFrame{
         int f=0, c=0;
         for(int i=0;i<9;i++){
             for(int j=0;j<11;j++){
-                if(id==valencia.matriz[i][j].id){
+                if(id==hub.almacen[i][j].getId()){
                     f=i;
                     c=j;
                 }
             }
         }
-        mostrar_id.setText(String.valueOf(valencia.matriz[f][c].id));
-        mostrar_peso.setText(String.valueOf(valencia.matriz[f][c].peso));
-        mostrar_decripcion.setText(valencia.matriz[f][c].descripcion);
-        mostrar_origen.setText(valencia.matriz[f][c].origen);
-        mostrar_pais.setText(valencia.matriz[f][c].pais);
-        if(valencia.matriz[f][c].prioridad == 1) prioridad1.setSelected(true);
-        if(valencia.matriz[f][c].prioridad == 2) prioridad2.setSelected(true);
-        if(valencia.matriz[f][c].prioridad == 3) prioridad3.setSelected(true);
-        aduanasCheck.setSelected(valencia.matriz[f][c].aduana);
+        mostrar_id.setText(String.valueOf(hub.almacen[f][c].getId()));
+        mostrar_peso.setText(String.valueOf(hub.almacen[f][c].getPeso()));
+        mostrar_decripcion.setText(hub.almacen[f][c].getDescripcion());
+        mostrar_origen.setText(hub.almacen[f][c].getOrigen());
+        mostrar_destino.setText(hub.almacen[f][c].getDestino());
+        mostrar_pais.setText(hub.almacen[f][c].getPais());
+        if(hub.almacen[f][c].getPrioridad() == 1) prioridad1.setSelected(true);
+        if(hub.almacen[f][c].getPrioridad() == 2) prioridad2.setSelected(true);
+        if(hub.almacen[f][c].getPrioridad() == 3) prioridad3.setSelected(true);
+        aduanasCheck.setSelected(hub.almacen[f][c].isAduana());
     }
 }

@@ -1,14 +1,14 @@
 package PaqG10_B;
 
 public class Contenedor {
-    public int id;
-    public int peso;
-    public String pais;
-    public boolean aduana;
-    public int prioridad;
-    public String descripcion;
-    public String origen;
-    public String destino;
+    private int id;
+    private int peso;
+    private String pais;
+    private boolean aduana;
+    private int prioridad;
+    private String descripcion;
+    private String origen;
+    private String destino;
 
 
     public int getId() {

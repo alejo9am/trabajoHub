@@ -1,8 +1,6 @@
 package PaqG10_B;
 
 import javax.swing.*;
-import javax.swing.plaf.synth.SynthOptionPaneUI;
-import javax.swing.plaf.synth.SynthPopupMenuUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -37,13 +35,13 @@ public class GestionContenedores extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
-        Hub Valencia = new Hub();
-        estadoHub.setText(Valencia.toString(Valencia));
+        Puerto almacen1 = new Puerto();
+        estadoHub.setText(almacen1.toString(almacen1));
 
         MostrarDatosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InfoContenedor panelInfo = new InfoContenedor(Integer.parseInt(id_mostrar.getText()),Valencia);
+                InfoContenedor panelInfo = new InfoContenedor(Integer.parseInt(id_mostrar.getText()),almacen1);
             }
         });
 
@@ -63,8 +61,8 @@ public class GestionContenedores extends JFrame{
                 apilado.setOrigen(origen_field.getText());
                 apilado.setDestino(destino_field.getText());
 
-                Valencia.apilar(apilado, Valencia);
-                estadoHub.setText(Valencia.toString(Valencia));
+                almacen1.apilar(apilado, almacen1);
+                estadoHub.setText(almacen1.toString(almacen1));
 
                 id_field.setText("");
                 peso_field.setText("");
