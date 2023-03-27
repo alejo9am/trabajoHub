@@ -36,6 +36,8 @@ public class GestionContenedores extends JFrame{
         setVisible(true);
 
         Puerto almacen1 = new Puerto();
+        Puerto almacen2 = new Puerto();
+        Puerto almacen3 = new Puerto();
         estadoHub.setText(almacen1.toString(almacen1));
 
         MostrarDatosButton.addActionListener(new ActionListener() {
@@ -61,11 +63,45 @@ public class GestionContenedores extends JFrame{
                 apilado.setOrigen(origen_field.getText());
                 apilado.setDestino(destino_field.getText());
 
-                almacen1.apilar(apilado, almacen1);
+                if(!almacen1.apilar(apilado, almacen1)){
+                    if(!almacen2.apilar(apilado, almacen2)){
+                        if(!almacen3.apilar(apilado, almacen3)){
+                            VentanaError errorLleno = new VentanaError("No queda espacio en los almacenes para esa prioridad");
+                        }
+                    }
+                }
                 estadoHub.setText(almacen1.toString(almacen1));
 
                 id_field.setText("");
                 peso_field.setText("");
+                destino_field.setText("");
+                descripcion_field.setText("");
+                origen_field.setText("");
+                pais_selector.setSelectedIndex(0);
+                aduanas_bool.setSelected(false);
+            }
+        });
+
+        desapilarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int col = Integer.parseInt(String.valueOf(columna_desapilar))-1;
+                almacen1.desapilar(col, almacen1);
+                estadoHub.setText(almacen1.toString(almacen1));
+            }
+        });
+
+        cuant_conten.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int suma=0;
+                String Pais = (String) pais_cuantos.getSelectedItem();
+                suma = suma + almacen1.cantCont(Pais, almacen1);
+                suma = suma + almacen2.cantCont(Pais, almacen2);
+                suma = suma + almacen3.cantCont(Pais, almacen3);
+                mostrar_nPaises.setText(String.valueOf(suma));
+
+                estadoHub.setText(almacen1.toString(almacen1));
             }
         });
     }

@@ -21,7 +21,7 @@ public class Puerto {
                 if (hub.almacen[i][j].getId() == -1){
                     s.append("0       ");
                 }
-                else s.append("1       ");
+                else s.append("X       ");
             }
             s.append("\n");
         }

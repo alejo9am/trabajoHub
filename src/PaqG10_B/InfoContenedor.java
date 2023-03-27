@@ -19,7 +19,6 @@ public class InfoContenedor extends JFrame{
         setContentPane(panelInfo);
         setTitle("Informacion del contenedor");
         setSize(640,420);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
         int f=0, c=0;
