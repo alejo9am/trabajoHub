@@ -59,4 +59,24 @@ public class Puerto {
             return false;
         }
     }
+    public boolean desapilar(int col, Puerto hub) {
+        for (int fila = 0; fila <= F-1; fila++) {  //cruzamos por todas las filas de la columna seleccionada
+            if (hub.almacen[fila][col].getId() != -1) { //comprobamos si la fila contiene o no un contenedor
+                hub.almacen[fila][col].setId(-1);   //cuando encontramos un contenedor en la columna lo eliminamos.
+                return true;
+            }
+        }
+         return false;
+    }
+    public int cantCont(String Pais, Puerto hub){
+        int suma =0;
+        for(int i=0;i<F;i++){   //cruzamos por las filas
+            for(int j=0;j<C;j++){   //cruzamos por las columnas
+                if(hub.almacen[i][j].getPais().equals(Pais)){ //comprobamos y sumamos los cantenedores segun su pais
+                    suma = suma + 1;
+                }
+            }
+        }
+        return suma;
+    }
 }
