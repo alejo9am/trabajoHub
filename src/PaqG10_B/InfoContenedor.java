@@ -22,8 +22,8 @@ public class InfoContenedor extends JFrame{
         setVisible(true);
 
         int f=0, c=0;
-        for(int i=0;i<9;i++){
-            for(int j=0;j<11;j++){
+        for(int i=0;i<10;i++){
+            for(int j=0;j<12;j++){
                 if(id==hub.almacen[i][j].getId()){
                     f=i;
                     c=j;

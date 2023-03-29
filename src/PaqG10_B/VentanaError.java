@@ -9,7 +9,8 @@ public class VentanaError extends JFrame{
     public VentanaError(String error){
         setContentPane(panelError);
         setTitle("Informacion del contenedor");
-        setSize(640,420);
+        setSize(420,210);
+        setLocationRelativeTo(null);
         setVisible(true);
         errorLabel.setText(error);
     }

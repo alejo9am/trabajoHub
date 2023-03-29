@@ -14,11 +14,11 @@ public class Puerto {
         }
     }
 
-    public String toString(Puerto hub){
+    public String toString(){
         StringBuilder s = new StringBuilder();
         for(int i=0;i<F;i++){
             for(int j=0;j<C;j++){
-                if (hub.almacen[i][j].getId() == -1){
+                if (this.almacen[i][j].getId() == -1){
                     s.append("0       ");
                 }
                 else s.append("X       ");
@@ -48,7 +48,7 @@ public class Puerto {
             return false;
         }
         else{
-            for(int col=2;col<(C-1);col++){
+            for(int col=2;col<C;col++){
                 for(int fil=(F-1);fil>=0;fil--){
                     if(hub.almacen[fil][col].getId() == -1){
                         hub.almacen[fil][col]=c;

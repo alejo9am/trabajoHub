@@ -26,7 +26,9 @@ public class GestionContenedores extends JFrame{
     private JTextField mostrar_nPaises;
     private JLabel logo_empresa;
     private JPanel Operaciones;
-    private JTextArea estadoHub;
+    private JTextArea estadoHub1;
+    private JTextArea estadoHub2;
+    private JTextArea estadoHub3;
 
     public GestionContenedores(){
         setContentPane(panelPrincipal);
@@ -38,7 +40,9 @@ public class GestionContenedores extends JFrame{
         Puerto almacen1 = new Puerto();
         Puerto almacen2 = new Puerto();
         Puerto almacen3 = new Puerto();
-        estadoHub.setText(almacen1.toString(almacen1));
+        estadoHub1.setText(almacen1.toString());
+        estadoHub2.setText(almacen2.toString());
+        estadoHub3.setText(almacen3.toString());
 
         MostrarDatosButton.addActionListener(new ActionListener() {
             @Override
@@ -50,35 +54,32 @@ public class GestionContenedores extends JFrame{
         apilarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Contenedor apilado = new Contenedor();
+                Contenedor c_apilar = new Contenedor();
 
-                apilado.setId(Integer.parseInt(id_field.getText()));
-                apilado.setPeso(Integer.parseInt(peso_field.getText()));
-                apilado.setPais((String) pais_selector.getSelectedItem());
-                apilado.setAduana(aduanas_bool.isSelected());
-                if (prioridad1.isSelected()) apilado.setPrioridad(1);
-                if (prioridad2.isSelected()) apilado.setPrioridad(2);
-                if (prioridad3.isSelected()) apilado.setPrioridad(3);
-                apilado.setDescripcion(descripcion_field.getText());
-                apilado.setOrigen(origen_field.getText());
-                apilado.setDestino(destino_field.getText());
+                c_apilar.setId(Integer.parseInt(id_field.getText()));
+                c_apilar.setPeso(Integer.parseInt(peso_field.getText()));
+                c_apilar.setPais((String) pais_selector.getSelectedItem());
+                c_apilar.setAduana(aduanas_bool.isSelected());
+                if (prioridad1.isSelected()) c_apilar.setPrioridad(1);
+                if (prioridad2.isSelected()) c_apilar.setPrioridad(2);
+                if (prioridad3.isSelected()) c_apilar.setPrioridad(3);
+                c_apilar.setDescripcion(descripcion_field.getText());
+                c_apilar.setOrigen(origen_field.getText());
+                c_apilar.setDestino(destino_field.getText());
 
-                if(!almacen1.apilar(apilado, almacen1)){
-                    if(!almacen2.apilar(apilado, almacen2)){
-                        if(!almacen3.apilar(apilado, almacen3)){
+                boolean apilado = false;
+                apilado = almacen1.apilar(c_apilar, almacen1);  //si intenta apilar en Hub 1
+                if(!apilado){ //se cumple si no se apila en Hub 1
+                    apilado = almacen2.apilar(c_apilar, almacen2);  //se intenta apilar en Hub 2
+                    if(!apilado){ //se cumple si no se apila en Hub 2
+                        apilado = almacen3.apilar(c_apilar, almacen3); //se intenta pilar en Hub 3
+                        if(!apilado){ //muestra la ventana si no se consigue apilar
                             VentanaError errorLleno = new VentanaError("No queda espacio en los almacenes para esa prioridad");
                         }
                     }
                 }
-                estadoHub.setText(almacen1.toString(almacen1));
 
-                id_field.setText("");
-                peso_field.setText("");
-                destino_field.setText("");
-                descripcion_field.setText("");
-                origen_field.setText("");
-                pais_selector.setSelectedIndex(0);
-                aduanas_bool.setSelected(false);
+
             }
         });
 
@@ -87,7 +88,7 @@ public class GestionContenedores extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 int col = Integer.parseInt(String.valueOf(columna_desapilar))-1;
                 almacen1.desapilar(col, almacen1);
-                estadoHub.setText(almacen1.toString(almacen1));
+                estadoHub1.setText(almacen1.toString());
             }
         });
 
@@ -101,9 +102,26 @@ public class GestionContenedores extends JFrame{
                 suma = suma + almacen3.cantCont(Pais, almacen3);
                 mostrar_nPaises.setText(String.valueOf(suma));
 
-                estadoHub.setText(almacen1.toString(almacen1));
+                estadoHub1.setText(almacen1.toString());
             }
         });
+    }
+
+    private void actualizar(Puerto alm1, Puerto alm2, Puerto alm3){
+        id_field.setText("");
+        peso_field.setText("");
+        destino_field.setText("");
+        descripcion_field.setText("");
+        origen_field.setText("");
+        pais_selector.setSelectedIndex(0);
+        aduanas_bool.setSelected(false);
+        columna_desapilar.setText("");
+        id_mostrar.setText("");
+        mostrar_nPaises.setText("");
+
+        estadoHub1.setText(alm1.toString());
+        estadoHub2.setText(alm2.toString());
+        estadoHub3.setText(alm3.toString());
     }
 
     public static void main(String[] args) {
