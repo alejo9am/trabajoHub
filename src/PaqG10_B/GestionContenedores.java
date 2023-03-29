@@ -26,28 +26,38 @@ public class GestionContenedores extends JFrame{
     private JTextField mostrar_nPaises;
     private JLabel logo_empresa;
     private JPanel Operaciones;
-    private JTextArea estadoHub1;
-    private JTextArea estadoHub2;
-    private JTextArea estadoHub3;
+    private JTextArea estadoHub;
 
-    public GestionContenedores(){
+    public GestionContenedores(Puerto almacen){
         setContentPane(panelPrincipal);
         setTitle("Gestion de contenedores");
         setSize(1280,720);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
-        Puerto almacen1 = new Puerto();
-        Puerto almacen2 = new Puerto();
-        Puerto almacen3 = new Puerto();
-        estadoHub1.setText(almacen1.toString());
-        estadoHub2.setText(almacen2.toString());
-        estadoHub3.setText(almacen3.toString());
+        estadoHub.setText(almacen.toString());
 
         MostrarDatosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InfoContenedor panelInfo = new InfoContenedor(Integer.parseInt(id_mostrar.getText()),almacen1);
+                int id = Integer.parseInt(id_mostrar.getText());
+                boolean existeContenedor = false;
+                for(int j=0;j<12;j++){          //el bucle comprueba si existe algun contenedor con el id introducido
+                    for(int i=9;i>=0;i--){
+                        if(id==almacen.almacen[i][j].getId()){
+                            existeContenedor = true;
+                            break;
+                        }
+                    }
+                }
+                if (existeContenedor){
+                    InfoContenedor panelInfo = new InfoContenedor(id,almacen);
+                    actualizar(almacen);
+                }
+                if(!existeContenedor){
+                    VentanaError noExiste = new VentanaError("No existe ningún contenedor con ese id");
+                    actualizar(almacen);
+                }
             }
         });
 
@@ -55,40 +65,52 @@ public class GestionContenedores extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Contenedor c_apilar = new Contenedor();
+                int id_apilar = Integer.parseInt(id_field.getText());
+                boolean id_repetido=false;
 
-                c_apilar.setId(Integer.parseInt(id_field.getText()));
-                c_apilar.setPeso(Integer.parseInt(peso_field.getText()));
-                c_apilar.setPais((String) pais_selector.getSelectedItem());
-                c_apilar.setAduana(aduanas_bool.isSelected());
-                if (prioridad1.isSelected()) c_apilar.setPrioridad(1);
-                if (prioridad2.isSelected()) c_apilar.setPrioridad(2);
-                if (prioridad3.isSelected()) c_apilar.setPrioridad(3);
-                c_apilar.setDescripcion(descripcion_field.getText());
-                c_apilar.setOrigen(origen_field.getText());
-                c_apilar.setDestino(destino_field.getText());
-
-                boolean apilado = false;
-                apilado = almacen1.apilar(c_apilar, almacen1);  //si intenta apilar en Hub 1
-                if(!apilado){ //se cumple si no se apila en Hub 1
-                    apilado = almacen2.apilar(c_apilar, almacen2);  //se intenta apilar en Hub 2
-                    if(!apilado){ //se cumple si no se apila en Hub 2
-                        apilado = almacen3.apilar(c_apilar, almacen3); //se intenta pilar en Hub 3
-                        if(!apilado){ //muestra la ventana si no se consigue apilar
-                            VentanaError errorLleno = new VentanaError("No queda espacio en los almacenes para esa prioridad");
+                for(int j=0;j<12;j++){
+                    for(int i=9;i>=0;i--){
+                        if(id_apilar==almacen.almacen[i][j].getId()){
+                            id_repetido=true;
+                            break;
                         }
                     }
                 }
+                if(id_repetido){
+                    VentanaError errorRepetido = new VentanaError("Ya hay un contenedor con ese identificador");
+                    actualizar(almacen);
+                }
+                if(!id_repetido) {
+                    c_apilar.setId(id_apilar);
+                    c_apilar.setPeso(Integer.parseInt(peso_field.getText()));
+                    c_apilar.setPais((String) pais_selector.getSelectedItem());
+                    c_apilar.setAduana(aduanas_bool.isSelected());
+                    if (prioridad1.isSelected()) c_apilar.setPrioridad(1);
+                    if (prioridad2.isSelected()) c_apilar.setPrioridad(2);
+                    if (prioridad3.isSelected()) c_apilar.setPrioridad(3);
+                    c_apilar.setDescripcion(descripcion_field.getText());
+                    c_apilar.setOrigen(origen_field.getText());
+                    c_apilar.setDestino(destino_field.getText());
 
+                    boolean apilado = false;
+                    apilado = almacen.apilar(c_apilar);  //se intenta apilar en el almacen
+                    if (!apilado) { //la condicion se cumple si no se consigue apilar
+                        VentanaError errorLleno = new VentanaError("No queda espacio en el almacén para esa prioridad");
+                    }
 
+                    actualizar(almacen);
+                }
             }
         });
 
         desapilarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int col = Integer.parseInt(String.valueOf(columna_desapilar))-1;
-                almacen1.desapilar(col, almacen1);
-                estadoHub1.setText(almacen1.toString());
+                int col = Integer.parseInt(columna_desapilar.getText())-1;
+                if(!almacen.desapilar(col)){
+                    VentanaError colVacia = new VentanaError("La columna no tiene contenedores");
+                }
+                else actualizar(almacen);
             }
         });
 
@@ -97,17 +119,13 @@ public class GestionContenedores extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 int suma=0;
                 String Pais = (String) pais_cuantos.getSelectedItem();
-                suma = suma + almacen1.cantCont(Pais, almacen1);
-                suma = suma + almacen2.cantCont(Pais, almacen2);
-                suma = suma + almacen3.cantCont(Pais, almacen3);
+                suma = almacen.cantCont(Pais);
                 mostrar_nPaises.setText(String.valueOf(suma));
-
-                estadoHub1.setText(almacen1.toString());
             }
         });
     }
 
-    private void actualizar(Puerto alm1, Puerto alm2, Puerto alm3){
+    private void actualizar(Puerto alm){
         id_field.setText("");
         peso_field.setText("");
         destino_field.setText("");
@@ -119,12 +137,11 @@ public class GestionContenedores extends JFrame{
         id_mostrar.setText("");
         mostrar_nPaises.setText("");
 
-        estadoHub1.setText(alm1.toString());
-        estadoHub2.setText(alm2.toString());
-        estadoHub3.setText(alm3.toString());
+        estadoHub.setText(alm.toString());
     }
 
     public static void main(String[] args) {
-        GestionContenedores panel = new GestionContenedores();
+        Puerto almacen = new Puerto(); //Creamos el almacen con el que se va a trabajar
+        GestionContenedores panel = new GestionContenedores(almacen);  //se abre el panel de gestion con el almacen creado
     }
 }

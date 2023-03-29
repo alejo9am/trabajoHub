@@ -1,6 +1,6 @@
 package PaqG10_B;
 
-public class Contenedor {
+public class Contenedor{
     private int id;
     private int peso;
     private String pais;
