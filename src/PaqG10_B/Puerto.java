@@ -5,6 +5,7 @@ public class Puerto {
     final int C = 12;
     public Contenedor[][] almacen = new Contenedor[F][C];
 
+
     public Puerto(){
         for(int i=0;i<F;i++){
             for(int j=0;j<C;j++){
